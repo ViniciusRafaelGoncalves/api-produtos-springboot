@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.sb.entity.Produto;
-import com.example.sb.exceptions.DatabaseIntegrityException;
 import com.example.sb.exceptions.ResourceNotFoundException;
 import com.example.sb.repository.ProdutoRepository;
 
@@ -40,11 +38,7 @@ public class ProdutoService implements Serializable {
 		if (!repository.existsById(id)) {
 			throw new ResourceNotFoundException(id);
 		}
-		try {
-			repository.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseIntegrityException("Produto não pôde ser deletado");
-		}
+		repository.deleteById(id);
 	}
 
 	public Produto updateProdutoById(Long id, Produto obj) {
